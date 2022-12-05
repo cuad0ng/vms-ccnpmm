@@ -1,7 +1,8 @@
-const express = require("express");
-const router = express.Router();
+import express from "express";
 
-const userController = require("../app/controllers/UserController");
+import userController from "../app/controllers/UserController";
+
+const router = express.Router();
 
 router.get("/", userController.findAll);
 router.get("/:id", userController.findOne);

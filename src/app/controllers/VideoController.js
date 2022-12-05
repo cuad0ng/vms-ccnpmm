@@ -1,5 +1,5 @@
 const Video = require("../models/Video");
-
+const cloudinary = require("../../middlewares/cloudinary");
 class VideoController {
   findAll(req, res, next) {
     Video.find({})
@@ -14,7 +14,8 @@ class VideoController {
   }
   create(req, res, next) {
     const formData = req.body;
-    // handle to cloudinary
+    const file = req.file;
+    console.log(file);
     const video = new Video(formData);
     video
       .save()

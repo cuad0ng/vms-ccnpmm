@@ -1,0 +1,17 @@
+{
+  "swaggerDefinition": {
+    "info": {
+      "version": "1.0.0",
+      "title": "API",
+      "description": "API Information",
+      "contact": {
+        "name": "Nhom ?"
+      },
+      "servers": [
+        "http://localhost:3000",
+        "https://vms-ccnpmm-production.up.railway.app"
+      ]
+    }
+  },
+  "apis": ["../routes/*.js"]
+}

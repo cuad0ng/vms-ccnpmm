@@ -14,12 +14,12 @@ class ImageController {
   }
   create(req, res, next) {
     const formData = req.body;
-    // handle to cloudinary
     const image = new Image(formData);
     image
       .save()
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
+    res.json(req.file);
   }
   update(req, res, next) {
     const id = req.params.id;
