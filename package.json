@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node src/index.js",
-    "start": "node src/index.js"
+    "start": "node build/index.js",
+    "build": "babel src -d build"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.5",
     "@babel/node": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
