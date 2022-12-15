@@ -1,5 +1,5 @@
 import User from "../models/User";
-
+import { internalServerError } from "../../middlewares/handleError";
 class UserController {
   findAll(req, res, next) {
     User.find({})
@@ -7,14 +7,21 @@ class UserController {
       .catch(() => res.json("err"));
   }
   findOne(req, res, next) {
-    const id = req.params.id;
+    const { id } = req.user;
     User.findById(id)
-      .then((user) => res.json(user))
-      .catch(() => res.json("err"));
+      .select({ password: false })
+      .then((user) =>
+        res.status(200).json({
+          err: user ? 0 : 1,
+          mes: user ? "Got" : "User not found",
+          userData: user,
+        })
+      )
+      .catch(() => internalServerError(res));
   }
   create(req, res, next) {
     const formData = req.body;
-    console.log(formData)
+    console.log(formData);
     // handle to cloudinary
     const user = new User(formData);
     user

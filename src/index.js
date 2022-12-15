@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
+import multer from "multer";
 import route from "./routes";
 import db from "./config/db";
 
 const port = process.env.PORT || 3000;
 const app = express();
+const form_data = multer()
 
 dotenv.config();
 db.connect();
@@ -20,6 +21,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(form_data.fields()); 
 
 route(app);
 

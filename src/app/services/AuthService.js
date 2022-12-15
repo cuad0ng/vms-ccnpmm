@@ -25,9 +25,8 @@ export const register = (user) =>
           { expiresIn: "5d" }
         );
       }
-
       resolve({
-        err: !response ? 0 : -1,
+        err: !response ? 0 : 1,
         msg: !response ? "Register Success" : "Email is exists",
         access_token: token ? `Bearer ${token}` : token,
       });
@@ -55,7 +54,7 @@ export const login = ({ email, password }) =>
           ? "Login Success"
           : response
           ? "Wrong Password"
-          : "not exist email",
+          : "Not exist email or has been used",
         access_token: token ? `Bearer ${token}` : token,
       });
     } catch (error) {

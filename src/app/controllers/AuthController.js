@@ -1,18 +1,16 @@
 import { register, login } from "../services/AuthService";
-import { internalServerError } from "../../middlewares/handleError";
-
+import { internalServerError, badRequest } from "../../middlewares/handleError";
+import { email, password } from "../../helpers/joi_schema";
+import joi from "joi";
 class AuthController {
   async register(req, res) {
     try {
-      const { email, password, ...rest } = req.body;
-      if (!email || !password) {
-        return res.status(400).json({
-          err: 1,
-          mes: "Missing payloads",
-        });
+      const { error } = joi.object({ email, password }).validate(req.body);
+      if (error) {
+        return badRequest(error.details[0]?.message, res);
       }
-      const response = await register(req.body);
 
+      const response = await register(req.body);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -20,12 +18,9 @@ class AuthController {
   }
   async login(req, res) {
     try {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        return res.status(400).json({
-          err: 1,
-          mes: "Missing payloads",
-        });
+      const { error } = joi.object({ email, password }).validate(req.body);
+      if (error) {
+        return badRequest(error.details[0]?.message, res);
       }
       const response = await login(req.body);
 

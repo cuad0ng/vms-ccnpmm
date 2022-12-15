@@ -2,11 +2,15 @@ const express = require("express");
 const router = express.Router();
 
 const imageController = require("../app/controllers/ImageController");
-const uploadCloud = require("../middlewares/cloudinary");
+const {uploadImage} = require("../middlewares/cloudinary");
+import verifyToken from "../middlewares/verifyToken";
+
 
 router.get("/", imageController.findAll);
 router.get("/:id", imageController.findOne);
-router.post("/", uploadCloud.single("image"), imageController.create);
+
+router.use(verifyToken);
+router.post("/", uploadImage.single("image"), imageController.create);
 router.put("/:id", imageController.update);
 router.delete("/:id", imageController.delete);
 

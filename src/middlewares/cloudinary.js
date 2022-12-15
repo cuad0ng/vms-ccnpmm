@@ -9,14 +9,22 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const storageImage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  allowedFormats: ["jpg", "png"],
   params: {
     folder: "vms-ccnpmm",
   },
 });
 
-const uploadCloud = multer({ storage: storage });
+const storageVideo = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "vms-ccnpmm",
+    resource_type: "video",
+  },
+});
 
-module.exports = uploadCloud;
+const uploadImage = multer({ storage: storageImage });
+const uploadVideo = multer({ storage: storageVideo });
+
+module.exports = { uploadImage, uploadVideo };

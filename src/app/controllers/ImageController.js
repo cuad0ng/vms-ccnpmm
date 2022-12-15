@@ -19,7 +19,6 @@ class ImageController {
       .save()
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
-    res.json(req.file);
   }
   update(req, res, next) {
     const id = req.params.id;
