@@ -13,7 +13,7 @@ var form_data = (0, _multer["default"])();
 _dotenv["default"].config();
 _db["default"].connect();
 app.use((0, _cors["default"])({
-  origin: process.env.CLIENT_URL,
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 app.use(_express["default"].json());
