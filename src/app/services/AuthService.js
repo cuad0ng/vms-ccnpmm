@@ -55,7 +55,8 @@ export const login = ({ email, password }) =>
           : response
           ? "Wrong Password"
           : "Not exist email or has been used",
-        access_token: token ? `Bearer ${token}` : token,
+        access_token: token,
+        userData: response,
       });
     } catch (error) {
       reject(error);

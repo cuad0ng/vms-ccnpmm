@@ -102,7 +102,8 @@ var login = function login(_ref2) {
               resolve({
                 err: token ? 0 : 1,
                 msg: token ? "Login Success" : response ? "Wrong Password" : "Not exist email or has been used",
-                access_token: token ? "Bearer ".concat(token) : token
+                access_token: token,
+                userData: response
               });
               _context2.next = 12;
               break;
