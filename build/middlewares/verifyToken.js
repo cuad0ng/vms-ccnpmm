@@ -11,7 +11,7 @@ var verifyToken = function verifyToken(req, res, next) {
   var token = req.headers.authorization;
   if (!token) return (0, _handleError.notAuth)("Require Authorization", res);
   var accessToken = token.split(" ")[1];
-  _jsonwebtoken["default"].verify(token, process.env.JWT_SECRET, function (err, user) {
+  _jsonwebtoken["default"].verify(accessToken, process.env.JWT_SECRET, function (err, user) {
     if (err) return (0, _handleError.notAuth)("Access token expired or invalid", res);
     req.user = user;
     next();
