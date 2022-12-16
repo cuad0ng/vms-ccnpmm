@@ -1,5 +1,5 @@
 import Video from "../models/Video";
-import { url, notes } from "../../helpers/joi_schema";
+import { url, userId } from "../../helpers/joi_schema";
 import joi from "joi";
 const cloudinary = require("cloudinary").v2;
 import { badRequest } from "../../middlewares/handleError";
@@ -23,12 +23,12 @@ class VideoController {
       .catch(() => res.json("err"));
   }
   create(req, res, next) {
-    const formData = req.body;
+    const { id } = req.user;
     const fileData = req.file;
     console.log(fileData)
     const { error } = joi
-      .object({ url, notes })
-      .validate({ ...formData, url: fileData?.path });
+      .object({ url, userId })
+      .validate({ url: fileData?.path, userId: id });
     if (error) {
       if (fileData) {
         cloudinary.uploader.destroy(fileData.filename);
@@ -36,13 +36,13 @@ class VideoController {
       }
       return badRequest(error.details[0]?.message, res);
     }
-    const video = new Video({ ...formData, url: fileData?.path });
+    const video = new Video({ url: fileData?.path, userId: id });
     video
       .save()
       .then((video) =>
         res.json({
           err: video ? 0 : 1,
-          mes: video ? "Created" : "Can not create",
+          mes: video ? "Video Created" : "Video Can not create",
         })
       )
       .catch(() => internalServerError(res));

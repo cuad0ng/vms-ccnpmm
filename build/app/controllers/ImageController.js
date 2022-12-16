@@ -44,7 +44,6 @@ var ImageController = /*#__PURE__*/function () {
     key: "create",
     value: function create(req, res, next) {
       var id = req.user.id;
-      var formData = req.body;
       var fileData = req.file;
       var _joi$object$validate = _joi["default"].object({
           url: _joi_schema.url,
@@ -67,7 +66,10 @@ var ImageController = /*#__PURE__*/function () {
         userId: id
       });
       image.save().then(function () {
-        return res.json("success");
+        return res.json({
+          err: image ? 0 : 1,
+          mes: image ? "Image Created" : "Image Can not create"
+        });
       })["catch"](function () {
         return res.json("err");
       });

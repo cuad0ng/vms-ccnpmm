@@ -25,7 +25,6 @@ class ImageController {
   }
   create(req, res, next) {
     const { id } = req.user;
-    const formData = req.body;
     const fileData = req.file;
     const { error } = joi
       .object({ url, userId })
@@ -40,7 +39,12 @@ class ImageController {
     const image = new Image({ url: fileData?.path, userId: id });
     image
       .save()
-      .then(() => res.json("success"))
+      .then(() =>
+        res.json({
+          err: image ? 0 : 1,
+          mes: image ? "Image Created" : "Image Can not create",
+        })
+      )
       .catch(() => res.json("err"));
   }
   update(req, res, next) {
