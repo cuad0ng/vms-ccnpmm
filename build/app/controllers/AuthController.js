@@ -30,7 +30,8 @@ var AuthController = /*#__PURE__*/function () {
                 _context.prev = 0;
                 _joi$object$validate = _joi["default"].object({
                   email: _joi_schema.email,
-                  password: _joi_schema.password
+                  password: _joi_schema.password,
+                  name: _joi_schema.name
                 }).validate(req.body), error = _joi$object$validate.error;
                 if (!error) {
                   _context.next = 4;

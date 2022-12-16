@@ -8,3 +8,4 @@ export const email = joi
 export const password = joi.string().min(6).required();
 export const url = joi.string().required();
 export const notes = joi.string().required();
+export const name = joi.string().required();

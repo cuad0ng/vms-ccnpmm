@@ -7,11 +7,14 @@ var User = new Schema({
   password: String,
   role: {
     type: String,
-    "default": 'US'
+    "default": "US"
   },
   status: String,
   active: String,
-  avatar: String,
+  avatar: {
+    type: String,
+    "default": "https://picsum.photos/id/237/200/300"
+  },
   videos: [String],
   images: [String],
   name: String,
