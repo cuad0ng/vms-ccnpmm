@@ -2,6 +2,8 @@
 
 var _User = _interopRequireDefault(require("../models/User"));
 var _handleError = require("../../middlewares/handleError");
+var _joi = _interopRequireDefault(require("joi"));
+var _joi_schema = require("../../helpers/joi_schema");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -55,7 +57,9 @@ var UserController = /*#__PURE__*/function () {
     key: "update",
     value: function update(req, res, next) {
       var id = req.params.id;
+      console.log(id);
       var formData = req.body;
+      console.log(formData);
       _User["default"].findByIdAndUpdate(id, formData).then(function () {
         return res.json("success");
       })["catch"](function () {
@@ -70,6 +74,29 @@ var UserController = /*#__PURE__*/function () {
         return res.json("success");
       })["catch"](function () {
         return res.json("err");
+      });
+    }
+  }, {
+    key: "uploadAvatar",
+    value: function uploadAvatar(req, res, next) {
+      var fileData = req.file;
+      console.log(fileData);
+      var _joi$object$validate = _joi["default"].object({
+          url: _joi_schema.url
+        }).validate({
+          url: fileData === null || fileData === void 0 ? void 0 : fileData.path
+        }),
+        error = _joi$object$validate.error;
+      if (error) {
+        var _error$details$;
+        if (fileData) {
+          cloudinary.uploader.destroy(fileData.filename);
+          console.log(fileData.filename);
+        }
+        return badRequest((_error$details$ = error.details[0]) === null || _error$details$ === void 0 ? void 0 : _error$details$.message, res);
+      }
+      return res.status(200).json({
+        avatar: fileData === null || fileData === void 0 ? void 0 : fileData.path
       });
     }
   }]);
