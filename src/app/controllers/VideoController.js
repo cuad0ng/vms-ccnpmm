@@ -66,7 +66,7 @@ class VideoController {
       res.status(200).json({
         err: user ? 0 : 1,
         mes: user ? "Got" : "Images not found",
-        image: user,
+        video: user,
       })
     );
   }
