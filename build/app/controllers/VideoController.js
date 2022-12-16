@@ -31,9 +31,14 @@ var VideoController = /*#__PURE__*/function () {
   }, {
     key: "findOne",
     value: function findOne(req, res, next) {
-      var id = req.params.id;
-      _Video["default"].findById(id).then(function (data) {
-        return res.json(data);
+      var paramId = req.params.id;
+      var id = req.user.id;
+      _Video["default"].findById(paramId).then(function (data) {
+        if (id === data.userId) {
+          res.json(data);
+        } else {
+          res.json("Unauthen");
+        }
       })["catch"](function () {
         return res.json("err");
       });
@@ -90,6 +95,20 @@ var VideoController = /*#__PURE__*/function () {
         return res.json("success");
       })["catch"](function () {
         return res.json("err");
+      });
+    }
+  }, {
+    key: "getVideosByUserId",
+    value: function getVideosByUserId(req, res, next) {
+      var id = req.user.id;
+      _Video["default"].find({
+        userId: id
+      }).then(function (user) {
+        return res.status(200).json({
+          err: user ? 0 : 1,
+          mes: user ? "Got" : "Images not found",
+          image: user
+        });
       });
     }
   }]);

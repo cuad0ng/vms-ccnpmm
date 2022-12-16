@@ -10,9 +10,16 @@ class VideoController {
       .catch(() => res.json("err"));
   }
   findOne(req, res, next) {
-    const id = req.params.id;
-    Video.findById(id)
-      .then((data) => res.json(data))
+    const paramId = req.params.id;
+    const { id } = req.user;
+    Video.findById(paramId)
+      .then((data) => {
+        if (id === data.userId) {
+          res.json(data);
+        } else {
+          res.json("Unauthen");
+        }
+      })
       .catch(() => res.json("err"));
   }
   create(req, res, next) {
@@ -52,6 +59,16 @@ class VideoController {
     Video.findByIdAndDelete(id, formData)
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
+  }
+  getVideosByUserId(req, res, next) {
+    const { id } = req.user;
+    Video.find({ userId: id }).then((user) =>
+      res.status(200).json({
+        err: user ? 0 : 1,
+        mes: user ? "Got" : "Images not found",
+        image: user,
+      })
+    );
   }
 }
 

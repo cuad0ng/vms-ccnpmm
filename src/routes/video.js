@@ -6,9 +6,10 @@ const { uploadVideo } = require("../middlewares/cloudinary");
 import verifyToken from "../middlewares/verifyToken";
 
 router.get("/", videoController.findAll);
-router.get("/:id", videoController.findOne);
 
 router.use(verifyToken);
+router.get("/get-videos", videoController.getVideosByUserId);
+router.get("/:id", videoController.findOne);
 router.post("/", uploadVideo.single("video"), videoController.create);
 router.put("/:id", videoController.update);
 router.delete("/:id", videoController.delete);

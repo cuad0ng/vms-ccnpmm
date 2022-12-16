@@ -8,8 +8,9 @@ var videoController = require("../app/controllers/VideoController");
 var _require = require("../middlewares/cloudinary"),
   uploadVideo = _require.uploadVideo;
 router.get("/", videoController.findAll);
-router.get("/:id", videoController.findOne);
 router.use(_verifyToken["default"]);
+router.get("/get-videos", videoController.getVideosByUserId);
+router.get("/:id", videoController.findOne);
 router.post("/", uploadVideo.single("video"), videoController.create);
 router.put("/:id", videoController.update);
 router["delete"]("/:id", videoController["delete"]);
