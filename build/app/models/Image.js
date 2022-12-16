@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var Image = new Schema({
   notes: String,
   url: String,
-  folder: String
+  folder: String,
+  userId: String
 }, {
   timestamps: true
 });

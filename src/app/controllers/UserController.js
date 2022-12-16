@@ -34,9 +34,7 @@ class UserController {
   }
   update(req, res, next) {
     const id = req.params.id;
-    console.log(id);
     const formData = req.body;
-    console.log(formData);
     User.findByIdAndUpdate(id, formData)
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
@@ -60,6 +58,8 @@ class UserController {
     }
     return res.status(200).json({ avatar: fileData?.path });
   }
+
+  
 }
 
 module.exports = new UserController();

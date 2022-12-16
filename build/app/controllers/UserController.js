@@ -57,9 +57,7 @@ var UserController = /*#__PURE__*/function () {
     key: "update",
     value: function update(req, res, next) {
       var id = req.params.id;
-      console.log(id);
       var formData = req.body;
-      console.log(formData);
       _User["default"].findByIdAndUpdate(id, formData).then(function () {
         return res.json("success");
       })["catch"](function () {

@@ -1,7 +1,9 @@
 const Image = require("../models/Image");
-import { url, notes } from "../../helpers/joi_schema";
+import { url, userId } from "../../helpers/joi_schema";
 import joi from "joi";
+const cloudinary = require("cloudinary").v2;
 
+import { badRequest } from "../../middlewares/handleError";
 class ImageController {
   findAll(req, res, next) {
     Image.find({})
@@ -9,17 +11,25 @@ class ImageController {
       .catch(() => res.json("err"));
   }
   findOne(req, res, next) {
-    const id = req.params.id;
-    Image.findById(id)
-      .then((data) => res.json(data))
+    const paramId = req.params.id;
+    const { id } = req.user;
+    Image.findById(paramId)
+      .then((data) => {
+        if (id === data.userId) {
+          res.json(data);
+        } else {
+          res.json("Unauthen");
+        }
+      })
       .catch(() => res.json("err"));
   }
   create(req, res, next) {
+    const { id } = req.user;
     const formData = req.body;
     const fileData = req.file;
     const { error } = joi
-      .object({ url, notes })
-      .validate({ ...formData, url: fileData?.path });
+      .object({ url, userId })
+      .validate({ url: fileData?.path, userId: id });
     if (error) {
       if (fileData) {
         cloudinary.uploader.destroy(fileData.filename);
@@ -27,7 +37,7 @@ class ImageController {
       }
       return badRequest(error.details[0]?.message, res);
     }
-    const image = new Image(formData);
+    const image = new Image({ url: fileData?.path, userId: id });
     image
       .save()
       .then(() => res.json("success"))
@@ -45,6 +55,16 @@ class ImageController {
     Image.findByIdAndDelete(id, formData)
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
+  }
+  getImagesByUserId(req, res, next) {
+    const { id } = req.user;
+    Image.find({ userId: id }).then((user) =>
+      res.status(200).json({
+        err: user ? 0 : 1,
+        mes: user ? "Got" : "Images not found",
+        image: user,
+      })
+    );
   }
 }
 

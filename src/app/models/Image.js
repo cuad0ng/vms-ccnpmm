@@ -7,6 +7,7 @@ const Image = new Schema(
     notes: String,
     url: String,
     folder: String,
+    userId: String,
   },
   {
     timestamps: true,
