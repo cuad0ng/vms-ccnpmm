@@ -1,4 +1,6 @@
 const Image = require("../models/Image");
+import { url, notes } from "../../helpers/joi_schema";
+import joi from "joi";
 
 class ImageController {
   findAll(req, res, next) {
@@ -14,6 +16,17 @@ class ImageController {
   }
   create(req, res, next) {
     const formData = req.body;
+    const fileData = req.file;
+    const { error } = joi
+      .object({ url, notes })
+      .validate({ ...formData, url: fileData?.path });
+    if (error) {
+      if (fileData) {
+        cloudinary.uploader.destroy(fileData.filename);
+        console.log(fileData.filename);
+      }
+      return badRequest(error.details[0]?.message, res);
+    }
     const image = new Image(formData);
     image
       .save()

@@ -1,5 +1,8 @@
 import User from "../models/User";
 import { internalServerError } from "../../middlewares/handleError";
+import joi from "joi";
+
+import { url } from "../../helpers/joi_schema";
 class UserController {
   findAll(req, res, next) {
     User.find({})
@@ -31,7 +34,9 @@ class UserController {
   }
   update(req, res, next) {
     const id = req.params.id;
+    console.log(id);
     const formData = req.body;
+    console.log(formData);
     User.findByIdAndUpdate(id, formData)
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
@@ -41,6 +46,19 @@ class UserController {
     User.findByIdAndDelete(id)
       .then(() => res.json("success"))
       .catch(() => res.json("err"));
+  }
+  uploadAvatar(req, res, next) {
+    const fileData = req.file;
+    console.log(fileData);
+    const { error } = joi.object({ url }).validate({ url: fileData?.path });
+    if (error) {
+      if (fileData) {
+        cloudinary.uploader.destroy(fileData.filename);
+        console.log(fileData.filename);
+      }
+      return badRequest(error.details[0]?.message, res);
+    }
+    return res.status(200).json({ avatar: fileData?.path });
   }
 }
 

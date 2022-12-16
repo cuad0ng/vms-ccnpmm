@@ -18,11 +18,10 @@ class VideoController {
   create(req, res, next) {
     const formData = req.body;
     const fileData = req.file;
-    console.log(fileData);
+    console.log(fileData)
     const { error } = joi
       .object({ url, notes })
       .validate({ ...formData, url: fileData?.path });
-
     if (error) {
       if (fileData) {
         cloudinary.uploader.destroy(fileData.filename);
