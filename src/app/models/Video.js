@@ -7,6 +7,7 @@ const Video = new Schema(
     notes: String,
     url: String,
     folder: String,
+    userId: String,
   },
   {
     timestamps: true,
